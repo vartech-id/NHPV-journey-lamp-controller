@@ -50,7 +50,7 @@ def root():
 
 @app.get("/relay-on/{n}")
 def relay_on(n: int):
-    if not (1 <= n <= 5):
+    if not (1 <= n <= 8):
         raise HTTPException(status_code=400, detail="Relay only supports 1..5")
 
     cmd = f"K{n}_ON"
@@ -62,7 +62,7 @@ def relay_on(n: int):
 
 @app.get("/relay-off/{n}")
 def relay_off(n: int):
-    if not (1 <= n <= 5):
+    if not (1 <= n <= 8):
         raise HTTPException(status_code=400, detail="Relay only supports 1..5")
 
     cmd = f"K{n}_OFF"
@@ -76,7 +76,7 @@ def relay_off(n: int):
 def relay_on_multi(req: RelaysReq):
 
     for n in req.relays:
-        if not (1 <= n <= 5):
+        if not (1 <= n <= 8):
             raise HTTPException(status_code=400, detail="Relay only supports 1..5")
 
     results = []
@@ -93,7 +93,7 @@ def relay_on_multi(req: RelaysReq):
 def relay_off_multi(req: RelaysReq):
 
     for n in req.relays:
-        if not (1 <= n <= 5):
+        if not (1 <= n <= 8):
             raise HTTPException(status_code=400, detail="Relay only supports 1..5")
 
     results = []
@@ -106,6 +106,7 @@ def relay_off_multi(req: RelaysReq):
 
     return {"count": len(results), "results": results}
 
+# database
 @app.post("/users")
 def create_user(payload: UserCreate, db: Session = Depends(get_db)):
     new_user = Users(pria=payload.pria, wanita=payload.wanita)

@@ -25,13 +25,13 @@ const handleNext = () => {
 };
 
 onMounted(() => {
-//   reset(10);
+  reset(10);
 
-//   start(async () => {
-//     await handleLamp();
-//     handleNext();
-//   });
-handleLamp()
+  start(async () => {
+    await handleLamp();
+    handleNext();
+  });
+// handleLamp()
 });
 </script>
 

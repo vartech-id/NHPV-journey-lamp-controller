@@ -9,7 +9,7 @@ const BASE_URL = import.meta.env.VITE_API_URL
 const router = useRouter()
 const lampCommand = ref("relay-off")
 
-const relayNumbers = [1,2,3,4,5];
+const relayNumbers = [1,2,3,4,5,6,7,8];
 
 const handleAllLamp = async () => {
   try {

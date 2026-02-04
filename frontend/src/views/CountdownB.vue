@@ -9,7 +9,7 @@ const BASE_URL = import.meta.env.VITE_API_URL
 const router = useRouter();
 const { countdown, start, reset } = useCountdown(10);
 
-const relayNumber = [2];
+const relayNumber = [1];
 
 const handleLamp = async () => {
   try {

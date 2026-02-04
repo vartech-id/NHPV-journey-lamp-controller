@@ -10,13 +10,13 @@ const router = useRouter()
 
 const lampCommand = ref("")
 
+const relayNumbers = [1,2,3,4,5,6,7,8];
+
 const handleNext = async () => {
   lampCommand.value = "relay-off"
   await handleAllLamp()
     router.push('/')
 }
-
-const relayNumbers = [1,2,3,4,5];
 
 const handleAllLamp = async () => {
   try {
