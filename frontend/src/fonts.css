@@ -1,0 +1,28 @@
+/* frontend/src/fonts.css */
+
+/* 1) Canela (OTF, Bold) */
+@font-face {
+  font-family: "Canela Deck";
+  src: url("./assets/fonts/CanelaDeck-Bold-Trial.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 2) Cormorant Garamond (SemiBold) */
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("./assets/fonts/CormorantGaramond-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 3) Instrument Sans (Variable font) */
+@font-face {
+  font-family: "Instrument Sans";
+  src: url("./assets/fonts/InstrumentSans-Variable.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
