@@ -7,7 +7,7 @@ import axios from "axios";
 const BASE_URL = import.meta.env.VITE_API_URL
 
 const router = useRouter();
-const { countdown, start, reset } = useCountdown(10);
+const { countdown, start, reset } = useCountdown(5);
 
 const relayNumber = [1];
 
@@ -25,7 +25,7 @@ const handleNext = () => {
 };
 
 onMounted(() => {
-  reset(10);
+  reset(5);
 
   start(async () => {
     await handleLamp();
@@ -35,11 +35,21 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <h1>CountdownB</h1>
-    <p>{{ countdown }}</p>
-    <button @click="handleNext">Next</button>
+  <div class="countdown-page">
+    <div class="countdown-msg">
+      <h1>Pasangan Wanita</h1>
+      <h1>diPersilahkan masuk ke</h1>
+      <h1>Box dalam....</h1>
+    </div>
+    <div class="countdown-wrapper">
+      <h1 class="countdown-time">{{ countdown }}</h1>
+    </div>
+    <div class="action-button">
+      <button class="btn" @click="handleNext">NEXT</button>
+    </div>
   </div>
 </template>
 
-<style scoped></style>
+<style>
+
+</style>

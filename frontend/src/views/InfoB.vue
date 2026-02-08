@@ -19,16 +19,36 @@ onMounted(() => {
     wanita.value = "";
   }
 });
+
 </script>
 
 <template>
-  <div>
-    <h1>InfoB</h1>
-    <h2>{{ wanita }}</h2>
-    <button @click="handleNext">Next</button>
+  <div class="info-page-wanita">
+    <div class="info-greeting">
+      <h1>"Hi {{ wanita }} wanita"</h1>
+      <h1>lihatlah pasanganmu disana!</h1>
+    </div>
+    <div class="info-msg">
+      <h1>Dia mungkin terlihat kuat,</h1>
+      <h1>tapi kesehatannya perlu di jaga</h1>
+    </div>
+    <div class="action-button">
+      <button class="btn" @click="handleNext">NEXT</button>
+    </div>
   </div>
 </template>
 
 <style scoped>
-
+.info-page-wanita{
+  background-color: aqua;
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-image: url(../assets/bg-infob.png);
+  padding-bottom: 12rem;
+  gap: 0.5rem;
+}
 </style>

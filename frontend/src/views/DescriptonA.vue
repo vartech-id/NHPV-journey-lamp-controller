@@ -11,10 +11,13 @@ const handleNext = () => {
 </script>
 
 <template>
-  <div>
-    <h1>DescriptonA</h1>
-    <button @click="handleNext">Next</button>
+  <div id="desc-man">
+    <img @click="handleNext" class="img-content" src="../assets/desc-wanita.png" alt="wanita">
   </div>
 </template>
 
-<style scoped></style>
+<style>
+  .img-content{ 
+    max-width: 1080px;
+  }
+</style>

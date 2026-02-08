@@ -9,9 +9,8 @@ const handleNext = () => {
 </script>
 
 <template>
-  <div>
-    <h1>DescriptonB</h1>
-    <button @click="handleNext">Next</button>
+  <div id="desc-wanita">
+    <img @click="handleNext" class="img-content" src="../assets/desc-male.png" alt="wanita">
   </div>
 </template>
 
