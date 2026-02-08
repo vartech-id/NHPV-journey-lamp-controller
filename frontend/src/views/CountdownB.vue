@@ -43,9 +43,10 @@ onMounted(() => {
     </div>
     <div class="countdown-wrapper">
       <h1 class="countdown-time">{{ countdown }}</h1>
+      <span>{{ error }}</span>
     </div>
     <div class="action-button">
-      <button class="btn" @click="handleNext">NEXT</button>
+      <button class="btn">NEXT</button>
     </div>
   </div>
 </template>

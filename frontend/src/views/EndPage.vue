@@ -9,10 +9,20 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 const router = useRouter();
 
 const lampCommand = ref("");
+const isConfirmOpen = ref(false);
 
 const relayNumbers = [1, 2, 3, 4, 5, 6, 7, 8];
 
+const openConfirm = () => {
+  isConfirmOpen.value = true;
+};
+
+const closeConfirm = () => {
+  isConfirmOpen.value = false;
+};
+
 const handleNext = async () => {
+  isConfirmOpen.value = false;
   lampCommand.value = "relay-off";
   await handleAllLamp();
   router.push("/");
@@ -47,7 +57,16 @@ onMounted(async () => {
       <p>bersama pasanganmu</p>
     </div>
     <div class="action-button">
-      <button class="btn" @click="handleNext">DONE</button>
+      <button class="btn" @click="openConfirm">DONE</button>
+    </div>
+    <div v-if="isConfirmOpen" class="modal-backdrop">
+      <div class="modal">
+        <h2>Apakah sudah berfoto?</h2>
+        <div class="modal-actions">
+          <button type="button" class="modal-btn" @click="closeConfirm">NO</button>
+          <button type="button" class="modal-btn" @click="handleNext">YES</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -77,6 +96,4 @@ onMounted(async () => {
   color: var(--color-text);
   font-weight: 500;
 }
-
-
 </style>

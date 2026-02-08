@@ -30,7 +30,7 @@ onMounted(() => {
     await handleLamp();
     handleNext();
   });
-  // handleLamp()
+  handleLamp()
 });
 </script>
 
@@ -45,7 +45,7 @@ onMounted(() => {
       <h1 class="countdown-time">{{ countdown }}</h1>
     </div>
     <div class="action-button">
-      <button class="btn" @click="handleNext">NEXT</button>
+      <button class="btn">NEXT</button>
     </div>
   </div>
 </template>
