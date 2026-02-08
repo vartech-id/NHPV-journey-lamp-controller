@@ -25,7 +25,7 @@ import { RouterView } from "vue-router";
   background-image: linear-gradient(to right, #0A565E, #32A194);
   color: #dddc25;
   background-color: white;
-  width: 25%;
+  width: 28%;
   font-size: 4rem;
   border: none;
   border-radius: 9rem;
