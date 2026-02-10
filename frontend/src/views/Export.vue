@@ -41,7 +41,7 @@ const downloadFile = async (endpoint, fallbackFilename) => {
   });
   const filename = getFilenameFromHeader(
     response.headers["content-disposition"],
-    fallbackFilename
+    fallbackFilename,
   );
   downloadBlob(response.data, filename);
   return filename;
@@ -80,15 +80,21 @@ const handleExport = async () => {
 
 <template>
   <div id="export-page">
-    <button @click="handleDownloadDatabase" :disabled="isDownloadingDb">
-      {{ isDownloadingDb ? "DOWNLOADING .DB..." : "DOWNLOAD .DB" }}
-    </button>
-    <button @click="handleExport" :disabled="isDownloadingExcel">
-      {{ isDownloadingExcel ? "EXPORTING EXCEL..." : "EXPORT EXCEL" }}
-    </button>
-    <button @click="handleHome">HOME</button>
-    <p v-if="statusMessage" class="status-msg">{{ statusMessage }}</p>
-    <p v-if="errorMessage" class="error-msg">{{ errorMessage }}</p>
+    <div class="action-button">
+      <!-- <button
+        class="btn"
+        @click="handleDownloadDatabase"
+        :disabled="isDownloadingDb"
+      >
+        {{ isDownloadingDb ? "DOWNLOADING .DB..." : "DOWNLOAD .DB" }}
+      </button> -->
+      <button class="btn" @click="handleExport" :disabled="isDownloadingExcel">
+        {{ isDownloadingExcel ? "EXPORTING EXCEL..." : "EXPORT EXCEL" }}
+      </button>
+      <button class="btn" @click="handleHome">HOME</button>
+      <p v-if="statusMessage" class="status-msg">{{ statusMessage }}</p>
+      <p v-if="errorMessage" class="error-msg">{{ errorMessage }}</p>
+    </div>
   </div>
 </template>
 
@@ -103,6 +109,13 @@ const handleExport = async () => {
   flex-direction: column;
   background-image: url(../assets/bg-welcome.png);
   gap: 2rem;
+}
+
+.action-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 button:disabled {
