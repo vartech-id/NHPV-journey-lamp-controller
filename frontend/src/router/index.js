@@ -12,6 +12,7 @@ import Register from "../views/Register.vue";
 import SwicthPage from "../views/SwitchPage.vue";
 import Welcome from "../views/Welcome.vue";
 import FollowPage from "../views/FollowPage.vue";
+import Export from "../views/Export.vue";
 
 const routes = [
   { path: "/", component: Welcome },
@@ -26,6 +27,7 @@ const routes = [
   { path: "/switch-page", component: SwicthPage },
   { path: "/welcome", component: Welcome },
   { path: "/follow-page", component: FollowPage },
+  { path: "/export", component: Export },
 ];
 
 export const router = createRouter({

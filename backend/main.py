@@ -1,9 +1,15 @@
 # pc_api/main.py
-from fastapi import FastAPI, HTTPException,Depends
+from io import BytesIO
+from pathlib import Path
+from fastapi import FastAPI, HTTPException, Depends
 from esp_client import ESP32SerialClient
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, StreamingResponse
 from contextlib import asynccontextmanager
 import threading
+from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
+from openpyxl import Workbook
 from schemas.esp_relay import RelaysReq
 from sqlalchemy.orm import Session
 from db.session import get_db, engine
@@ -12,6 +18,18 @@ from schemas.users import UserCreate
 from models.users import Base
 
 serial_lock = threading.Lock()
+
+
+def get_wib_timezone():
+    try:
+        return ZoneInfo("Asia/Jakarta")
+    except ZoneInfoNotFoundError:
+        # Fallback for environments without IANA tz database (common on Windows).
+        return timezone(timedelta(hours=7), name="WIB")
+
+
+WIB_TZ = get_wib_timezone()
+DB_FILE_PATH = Path(__file__).resolve().parent / "database.db"
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -109,8 +127,61 @@ def relay_off_multi(req: RelaysReq):
 # database
 @app.post("/users")
 def create_user(payload: UserCreate, db: Session = Depends(get_db)):
-    new_user = Users(pria=payload.pria, wanita=payload.wanita)
+    now_wib = datetime.now(WIB_TZ)
+    new_user = Users(
+        pria=payload.pria,
+        wanita=payload.wanita,
+        register_timestamp=now_wib,
+    )
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
-    return {"id": new_user.id, "pria": new_user.pria, "wanita": new_user.wanita}
+    return {
+        "id": new_user.id,
+        "pria": new_user.pria,
+        "wanita": new_user.wanita,
+        "register_timestamp": new_user.register_timestamp.isoformat(),
+    }
+
+
+@app.get("/export/database")
+def export_database():
+    if not DB_FILE_PATH.exists():
+        raise HTTPException(status_code=404, detail="Database file not found")
+
+    filename = f"database-{datetime.now(WIB_TZ).strftime('%Y%m%d-%H%M%S')}.db"
+    return FileResponse(
+        path=DB_FILE_PATH,
+        media_type="application/octet-stream",
+        filename=filename,
+    )
+
+
+@app.get("/export/couples.xlsx")
+def export_couples_excel(db: Session = Depends(get_db)):
+    workbook = Workbook()
+    worksheet = workbook.active
+    worksheet.title = "couples"
+    worksheet.append(["id", "pria", "wanita", "register_timestamp"])
+
+    users = db.query(Users).order_by(Users.id.asc()).all()
+    for user in users:
+        register_timestamp = (
+            user.register_timestamp.isoformat() if user.register_timestamp else ""
+        )
+        worksheet.append([user.id, user.pria, user.wanita, register_timestamp])
+
+    output = BytesIO()
+    workbook.save(output)
+    workbook.close()
+    output.seek(0)
+
+    filename = f"couples-{datetime.now(WIB_TZ).strftime('%Y%m%d-%H%M%S')}.xlsx"
+    headers = {"Content-Disposition": f'attachment; filename="{filename}"'}
+    return StreamingResponse(
+        output,
+        media_type=(
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ),
+        headers=headers,
+    )

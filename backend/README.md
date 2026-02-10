@@ -23,6 +23,9 @@ API Endpoints
 - `POST /relay-on` -> body: `{ "relays": [1,2,3] }`
 - `POST /relay-off` -> body: `{ "relays": [1,2,3] }`
 - `POST /users` -> body: `{ "pria": "jaka", "wanita": "reni" }`
+  - Auto-save `register_timestamp` in WIB (`Asia/Jakarta`).
+- `GET /export/database` -> download SQLite file (`.db`)
+- `GET /export/couples.xlsx` -> download data couples in Excel (`.xlsx`)
 
 Notes
 - SQLite tables must exist before inserts. Create tables at startup or via migration.
