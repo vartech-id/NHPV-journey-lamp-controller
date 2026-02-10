@@ -25,7 +25,7 @@ onMounted(() => {
 <template>
   <div class="info-page-wanita">
     <div class="info-greeting">
-      <h1>"Hi {{ wanita }} wanita"</h1>
+      <h1>"Hi {{ wanita }}"</h1>
       <h1>lihatlah pasanganmu disana!</h1>
     </div>
     <div class="info-msg">

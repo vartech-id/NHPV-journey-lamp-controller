@@ -30,7 +30,6 @@ onMounted(() => {
     await handleLamp();
     handleNext();
   });
-  handleLamp()
 });
 </script>
 

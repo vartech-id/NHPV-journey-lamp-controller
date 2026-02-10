@@ -24,12 +24,12 @@ onMounted(() => {
 <template>
   <div class="info-page">
     <div class="info-greeting">
-      <h1>"Hi {{ pria }} Pria"</h1>
+      <h1>"Hi {{ pria }}"</h1>
       <h1>lihatlah pasanganmu disana!</h1>
     </div>
     <div class="info-msg">
       <h1>Dia adalah seorang yang kamu jaga hari ini,</h1>
-      <h1>dan esok dan seterusnya</h1>
+      <h1>esok dan seterusnya</h1>
     </div>
     <div class="action-button">
       <button class="btn" @click="handleNext">NEXT</button>

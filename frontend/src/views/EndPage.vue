@@ -23,9 +23,7 @@ const closeConfirm = () => {
 
 const handleNext = async () => {
   isConfirmOpen.value = false;
-  lampCommand.value = "relay-off";
-  await handleAllLamp();
-  router.push("/");
+  router.push("/follow-page");
 };
 
 const handleAllLamp = async () => {

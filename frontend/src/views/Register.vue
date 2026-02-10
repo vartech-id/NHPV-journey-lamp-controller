@@ -67,7 +67,7 @@ const handleNext = () => {
     <div class="action-button">
       <button class="btn" @click="handleSubmit">NEXT</button>
     </div>
-    <button @click="handleNext">Next</button>
+    <!-- <button @click="handleNext">Next</button> -->
   </div>
 </template>
 

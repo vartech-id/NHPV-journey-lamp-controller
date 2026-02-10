@@ -24,7 +24,7 @@ const handleNext = () => {
     <img @click="openConfirm" class="img-content" src="../assets/desc-male.png" alt="wanita" />
     <div v-if="isConfirmOpen" class="modal-backdrop">
       <div class="modal">
-        <h2>Are you sure?</h2>
+        <h2>Lanjut ke halaman selanjutnya ?</h2>
         <div class="modal-actions">
           <button type="button" class="modal-btn" @click="closeConfirm">NO</button>
           <button type="button" class="modal-btn" @click="handleNext">YES</button>
