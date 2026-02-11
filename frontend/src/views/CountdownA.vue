@@ -36,7 +36,7 @@ onMounted(() => {
 <template>
   <div class="countdown-page">
     <div class="countdown-msg">
-      <h1>Pasangan Pria</h1>
+      <h1>Pasangan Wanita</h1>
       <h1>diPersilahkan masuk ke</h1>
       <h1>Box dalam....</h1>
     </div>
