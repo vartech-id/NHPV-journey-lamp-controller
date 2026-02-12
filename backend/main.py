@@ -35,14 +35,21 @@ DB_FILE_PATH = Path(__file__).resolve().parent / "database.db"
 async def lifespan(app: FastAPI):
     # startup
     Base.metadata.create_all(bind=engine)
-    esp.open()
-    resp = esp.send_command("PING")
-    print("ESP32 handshake:", resp)
+    try:
+        esp.open()
+        resp = esp.send_command("PING")
+        print("ESP32 handshake:", resp)
+    except Exception as exc:
+        # Keep API alive so relay endpoints can trigger reconnect on demand.
+        print("ESP32 handshake failed:", exc)
 
     yield  # app is running
 
     # shutdown
-    esp.close()
+    try:
+        esp.close()
+    except Exception as exc:
+        print("ESP32 close failed:", exc)
 
 app = FastAPI(lifespan=lifespan)
 
@@ -69,24 +76,34 @@ def root():
 @app.get("/relay-on/{n}")
 def relay_on(n: int):
     if not (1 <= n <= 8):
-        raise HTTPException(status_code=400, detail="Relay only supports 1..5")
+        raise HTTPException(status_code=400, detail="Relay only supports 1..8")
 
     cmd = f"K{n}_ON"
 
     with serial_lock:
-        resp = esp.send_command(cmd)
+        try:
+            resp = esp.send_command(cmd)
+        except RuntimeError as exc:
+            raise HTTPException(
+                status_code=503, detail=f"ESP32 serial error while sending {cmd}: {exc}"
+            ) from exc
 
     return {"sent": cmd, "resp": resp}
 
 @app.get("/relay-off/{n}")
 def relay_off(n: int):
     if not (1 <= n <= 8):
-        raise HTTPException(status_code=400, detail="Relay only supports 1..5")
+        raise HTTPException(status_code=400, detail="Relay only supports 1..8")
 
     cmd = f"K{n}_OFF"
 
     with serial_lock:                 
-        resp = esp.send_command(cmd)
+        try:
+            resp = esp.send_command(cmd)
+        except RuntimeError as exc:
+            raise HTTPException(
+                status_code=503, detail=f"ESP32 serial error while sending {cmd}: {exc}"
+            ) from exc
 
     return {"sent": cmd, "resp": resp}
 
@@ -95,14 +112,20 @@ def relay_on_multi(req: RelaysReq):
 
     for n in req.relays:
         if not (1 <= n <= 8):
-            raise HTTPException(status_code=400, detail="Relay only supports 1..5")
+            raise HTTPException(status_code=400, detail="Relay only supports 1..8")
 
     results = []
 
     with serial_lock:
         for n in req.relays:
             cmd = f"K{n}_ON"
-            resp = esp.send_command(cmd)
+            try:
+                resp = esp.send_command(cmd)
+            except RuntimeError as exc:
+                raise HTTPException(
+                    status_code=503,
+                    detail=f"ESP32 serial error while sending {cmd}: {exc}",
+                ) from exc
             results.append({"n": n, "sent": cmd, "resp": resp})
 
     return {"count": len(results), "results": results}
@@ -112,14 +135,20 @@ def relay_off_multi(req: RelaysReq):
 
     for n in req.relays:
         if not (1 <= n <= 8):
-            raise HTTPException(status_code=400, detail="Relay only supports 1..5")
+            raise HTTPException(status_code=400, detail="Relay only supports 1..8")
 
     results = []
 
     with serial_lock:
         for n in req.relays:
             cmd = f"K{n}_OFF"
-            resp = esp.send_command(cmd)
+            try:
+                resp = esp.send_command(cmd)
+            except RuntimeError as exc:
+                raise HTTPException(
+                    status_code=503,
+                    detail=f"ESP32 serial error while sending {cmd}: {exc}",
+                ) from exc
             results.append({"n": n, "sent": cmd, "resp": resp})
 
     return {"count": len(results), "results": results}

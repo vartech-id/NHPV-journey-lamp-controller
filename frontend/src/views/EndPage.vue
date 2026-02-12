@@ -5,6 +5,7 @@ import { ref } from "vue";
 import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
+const LAMP_API_TIMEOUT_MS = 5000;
 
 const router = useRouter();
 
@@ -30,6 +31,8 @@ const handleMainLamp = async () => {
   try {
     const result = await axios.post(BASE_URL + lampCommand.value, {
       relays: relayNumbers,
+    }, {
+      timeout: LAMP_API_TIMEOUT_MS,
     });
     console.log(result.data);
   } catch (error) {
@@ -41,6 +44,8 @@ const handleCentralLamp = async () => {
   try {
     const result = await axios.post(BASE_URL + "relay-off", {
       relays: [1],
+    }, {
+      timeout: LAMP_API_TIMEOUT_MS,
     });
     console.log(result.data);
   } catch (error) {
