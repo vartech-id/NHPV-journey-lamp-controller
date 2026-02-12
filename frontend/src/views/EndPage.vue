@@ -11,7 +11,7 @@ const router = useRouter();
 const lampCommand = ref("");
 const isConfirmOpen = ref(false);
 
-const relayNumbers = [1, 2, 3, 4, 5, 6, 7, 8];
+const relayNumbers = [2, 3, 4, 5, 6, 7, 8]; //center off
 
 const openConfirm = () => {
   isConfirmOpen.value = true;
@@ -26,7 +26,7 @@ const handleNext = async () => {
   router.push("/follow-page");
 };
 
-const handleAllLamp = async () => {
+const handleMainLamp = async () => {
   try {
     const result = await axios.post(BASE_URL + lampCommand.value, {
       relays: relayNumbers,
@@ -37,9 +37,21 @@ const handleAllLamp = async () => {
   }
 };
 
+const handleCentralLamp = async () => {
+  try {
+    const result = await axios.post(BASE_URL + "relay-off", {
+      relays: [1],
+    });
+    console.log(result.data);
+  } catch (error) {
+    console.error(`API Error:`, error);
+  }
+}
+
 onMounted(async () => {
   lampCommand.value = "relay-on";
-  await handleAllLamp();
+  await handleCentralLamp()
+  await handleMainLamp();
 });
 </script>
 
@@ -61,8 +73,12 @@ onMounted(async () => {
       <div class="modal">
         <h2>Apakah sudah berfoto?</h2>
         <div class="modal-actions">
-          <button type="button" class="modal-btn" @click="closeConfirm">NO</button>
-          <button type="button" class="modal-btn" @click="handleNext">YES</button>
+          <button type="button" class="modal-btn" @click="closeConfirm">
+            NO
+          </button>
+          <button type="button" class="modal-btn" @click="handleNext">
+            YES
+          </button>
         </div>
       </div>
     </div>
@@ -81,7 +97,7 @@ onMounted(async () => {
   background-image: url(../assets/bg-countdown-male.png);
 }
 
-.end-msg{ 
+.end-msg {
   font-size: 2.2rem;
   display: flex;
   flex-direction: column;
